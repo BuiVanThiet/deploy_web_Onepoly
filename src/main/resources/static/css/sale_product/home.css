@@ -1,0 +1,92 @@
+.custom-toast {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease-in-out;
+    max-width: 350px;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.custom-toast-show {
+    opacity: 1;
+    visibility: visible;
+    animation: custom-slide-in-right 0.5s ease forwards;
+}
+
+.custom-toast-hide {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0s 0.5s;
+}
+
+@keyframes custom-slide-in-right {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.custom-toast-header {
+    padding: 0.5rem 1rem;
+    background-color: #04812d;
+    display: flex;
+    align-items: center;
+}
+
+.custom-toast-header i {
+    font-size: 1.5rem;
+    color: #ffffff;
+}
+
+.custom-toast-header .me-auto {
+    font-weight: normal;
+    color: white;
+    margin-left: 10px;
+}
+
+/* Custom Nút đóng */
+.custom-btn-close {
+    filter: invert(1);
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Custom Toast body */
+.custom-toast-body {
+    padding: 1rem;
+    background-color: #f8f9fa;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.table-sale-product {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-sale-product th, .table-sale-product td {
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle;
+    word-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+}
+.table-sale-product th {
+    background-color: #00bfff;
+}
+.table-sale-product tr {
+    border-bottom: 1px solid #ddd;
+}
+.table-sale-product td {
+    background-color: white;
+}
+.table-sale-product img {
+    width: 100px;
+    height: 100px;
+    border-radius: 5px;
+}

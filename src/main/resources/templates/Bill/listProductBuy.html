@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            word-break: break-word;
+            white-space: normal;
+        }
+
+        tr {
+            border-bottom: 1px solid #ddd;
+        }
+        td {
+            background-color: white;
+        }
+
+    </style>
+</head>
+<body>
+<div th:fragment="listProductBuy">
+    <div id="noDataContainer" style="display:none; text-align:center;">
+        <!-- Ảnh sẽ được hiển thị ở đây nếu không có dữ liệu -->
+    </div>
+
+    <table id="table-product-buy" class="table mt-2" style="display:none;">
+        <thead>
+        <tr class="text-center">
+            <th scope="col" style="width: 1%;  background-color: #00bfff;">STT</th>
+            <th scope="col" style="width: 15%;  background-color: #00bfff;">Ảnh</th>
+            <th scope="col" style="width: 20%;  background-color: #00bfff;">Sản phẩm</th>
+            <th scope="col" style="width: 8%;  background-color: #00bfff;">Giá</th>
+            <th scope="col" style="width: 14%;  background-color: #00bfff;">Số lượng</th>
+            <th scope="col" style="width: 5%;  background-color: #00bfff;">Tổng tiền</th>
+            <th scope="col" style="width: 5%;  background-color: #00bfff;">Hành động</th>
+        </tr>
+        </thead>
+        <tbody id="tableBillDetail">
+        <!-- Dữ liệu sẽ được tải ở đây -->
+        </tbody>
+    </table>
+
+    <div class="pagination-section">
+        <!-- Phân trang 2 -->
+        <div class="pagination-custom d-flex justify-content-center">
+            <ul id="billDetailPageMax" class="pagination"></ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

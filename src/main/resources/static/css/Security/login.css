@@ -1,0 +1,101 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+.home {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    background-color: #f5f5f5; /* Có thể thay đổi thành hình nền khác nếu cần */
+}
+
+.form_container {
+    position: fixed;
+    max-width: 600px; /* Tăng chiều dài form lên 20% */
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 101;
+    background: #fff;
+    padding: 40px; /* Tăng padding lên 20% */
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.1);
+}
+
+.form_container h2 {
+    font-size: 30px; /* Tăng kích thước font lên 20% */
+    color: #0b0217;
+    text-align: center;
+}
+
+.input_box {
+    position: relative;
+    margin-top: 36px; /* Tăng khoảng cách lên 20% */
+    width: 100%;
+    height: 48px; /* Tăng chiều cao lên 20% */
+}
+
+.input_box input {
+    height: 100%;
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 0 36px; /* Tăng padding lên 20% */
+    color: #333;
+    transition: all 0.2s ease;
+    border-bottom: 1.5px solid #aaaaaa;
+}
+
+.input_box input:focus {
+    border-color: #7d2ae8;
+}
+
+.input_box i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px; /* Tăng kích thước icon lên 20% */
+    color: #707070;
+}
+
+.option_field {
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.form_container .button {
+    background: #7d2ae8;
+    margin-top: 50px; /* Tăng khoảng cách lên 50px hoặc giá trị tùy chỉnh bạn mong muốn */
+    width: 100%;
+    padding: 12px 0; /* Giữ nguyên padding */
+    border-radius: 10px;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+
+.pw_hide {
+    position: absolute;
+    top: 50%;
+    right: 12px; /* Tăng khoảng cách icon mắt bên phải lên 20% */
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #707070;
+}
+
+.error-message {
+    color: red; /* Màu chữ đỏ */
+    font-size: 14px; /* Kích thước chữ */
+    margin-top: 5px; /* Khoảng cách từ trường nhập đến thông báo */
+    display: block; /* Hiển thị thông báo */
+}
+

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{Home/home_manege}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Male_Fashion Template">
+    <meta name="keywords" content="Male_Fashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Shop Giày Onepoly</title>
+
+
+</head>
+
+<body>
+<main>
+    <div layout:fragment="content">
+        <article class="position-relative bd-gutter mt-5 my-md-4 bd-layout d-flex justify-content-center align-items-center" style="height: 100vh;">
+            <div class="position-absolute top-0 start-0">
+                <a th:href="${redirectBill != null ? redirectBill : '/staff/bill/home'}" class="btn">
+                    <i class="bi bi-arrow-return-left"></i>
+                    <span th:text="${redirectBill != null ? 'Trở về trang hóa đơn chi tiết' : 'Trở lại trang bán hàng!'}"></span>
+                </a>
+            </div>
+<!--            <div class="position-absolute top-0 start-0">-->
+<!--                <a href="/staff/bill/home" class="btn ">-->
+<!--                    <i class="bi bi-arrow-return-left"></i>-->
+<!--                    Trở lại trang bán hàng!-->
+<!--                </a>-->
+<!--            </div>-->
+            <div class="text-center">
+                <span th:text="${title}"></span>
+                <br>
+                <i class="bi bi-cart-check" style="font-size: 100px;"></i>
+                <br>
+                <button class="btn btn-outline-secondary" onclick="createBillPDF()">
+                    <i class="bi bi-file-earmark-arrow-up"></i>
+                    In hóa đơn
+                </button>
+                <input type="hidden" id="idBillCreatePDF" th:value="${url}">
+            </div>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                function createBillPDF() {
+                    var idPDF = parseInt($('#idBillCreatePDF').val());
+                        console.log('id de tao oa don la ' + idPDF)
+
+                    $.ajax({
+                        type: "GET",
+                        url: "/bill-api/bill-pdf/"+idPDF,
+                        xhrFields: {
+                            responseType: 'blob'  // Nhận PDF dưới dạng blob
+                        },
+                        success: function (response) {
+                            // Tạo URL cho blob PDF
+                            const pdfUrl = URL.createObjectURL(response);
+
+                            // Mở tab mới và hiển thị PDF
+                            const newTab = window.open();
+                            newTab.document.write(`<iframe src="${pdfUrl}" width="100%" height="100%" style="border:none;"></iframe>`);
+
+                        },
+                        error: function (xhr) {
+                            console.error('loi ' + xhr.responseType);
+                        }
+                    })
+                }
+            </script>
+        </article>
+    </div>
+</main>
+</body>
+
+</html>

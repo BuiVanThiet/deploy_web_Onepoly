@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{Home/home_manege}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/css/customer/list.css" type="text/css">
+    <title>Danh sách khách hàng</title>
+</head>
+
+<body>
+
+<!--<main class="container">-->
+<!--    <div layout:fragment="content">-->
+<!--        <article class="container-xxl bd-gutter mt-5 my-md-4 bd-layout">-->
+<!--            <h1 class="center">Danh sách khách hàng</h1>-->
+
+<!--            <div class="button">-->
+<!--                <a href="/customer/create" class="btn btn-primary">Thêm mới khach hang</a>-->
+<!--            </div>-->
+
+<!--            <form action="/customer/search">-->
+<!--            <div class="search-container">-->
+<!--                <div class="search-bar">-->
+<!--                    <span class="icon"><i class="fas fa-search"></i></span> &lt;!&ndash; Sử dụng icon kính lúp &ndash;&gt;-->
+<!--                    <input type="text" name="key" placeholder="Tìm kiếm...">-->
+<!--                </div>-->
+<!--                <button class="btn btn-primary">Tìm kiếm</button>-->
+<!--            </div>-->
+<!--            </form>-->
+
+<!--            <table class="table table-bordered table-striped">-->
+<!--                <thead>-->
+<!--                <tr>-->
+<!--                    <th>Ảnh</th>-->
+<!--                    <th>Tên khách hàng</th>-->
+<!--                    <th>Giới tính</th>-->
+<!--&lt;!&ndash;                    <th>Ngày sinh</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <th>Số điện thoại</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <th>Email</th>&ndash;&gt;-->
+<!--                    <th>Địa chỉ</th>-->
+<!--                    <th>Trạng thái</th>-->
+<!--                    <th>Hành động</th>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                <tr th:each="customer, index: ${pageCustomer}">-->
+<!--                    <td>-->
+<!--                        <img th:src="'https://res.cloudinary.com/dfy4umpja/image/upload/v1728721025/'+${customer.image}" style="height: 50px;" alt="Khong co anh">-->
+<!--                    </td>-->
+<!--                    <td th:text="${customer.fullName}"></td>-->
+<!--                    <td th:text="${customer.gender}"> </td>-->
+<!--&lt;!&ndash;                    <td th:text="${customer.birthDay}"> </td>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <td th:text="${customer.numberPhone}">  </td>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <td th:text="${customer.email}"></td>&ndash;&gt;-->
+<!--                    <td th:text="${customer.addRess}"> </td>-->
+<!--                    <td th:text="${customer.status}"> </td>-->
+<!--                    <td>-->
+<!--                        <a th:href="@{/customer/edit/{id}(id=${customer.id})}" class="edit-icon" onclick="enableEditing(this); return false;"><i class="fas fa-edit" title="Edit"></i></a>-->
+<!--                        <a href="#" class="save-icon" style="display:none;" onclick="saveChanges(this); return false;"><i class="fas fa-save" title="Save"></i></a>-->
+<!--                        <a th:href="@{/customer/detail/{id}(id=${customer.id})}"><i class="icon-detail fas fa-bars"></i></a>-->
+<!--                        <a th:href="@{/customer/delete/{id}(id=${customer.id})}" onclick="return confirm('Bạn có chắc chắn muốn xóa khach hang?')"><i class="icon-delete fas fa-trash" title="Delete"></i></a>-->
+<!--                    </td>-->
+<!--                </tr>-->
+
+<!--                </tbody>-->
+<!--            </table>-->
+<!--            <div class="text-center m-3">-->
+<!--                <div class="d-flex justify-content-center">-->
+<!--                    <a th:href="@{/customer/list?pageNumber=0}"-->
+<!--                       class="btn btn-secondary mx-1">First</a>-->
+<!--                    <a th:href="@{/customer/list(pageNumber=${pageCustomer.first ? 0 : pageCustomer.number - 1})}"-->
+<!--                       class="btn btn-secondary mx-1">Previous</a>-->
+<!--                    <div th:if="${pageCustomer.totalPages > 0}" class="d-flex">-->
+<!--                        <div th:each="pageNumber : ${#numbers.sequence(0, pageCustomer.totalPages - 1)}"-->
+<!--                             class="mx-1">-->
+<!--                            <a th:href="@{/customer/list(pageNumber=${pageNumber})}"-->
+<!--                               class="btn btn-primary"-->
+<!--                               th:text="${pageNumber + 1}"></a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <a th:href="@{/customer/list(pageNumber=${pageCustomer.last ? pageCustomer.totalPages - 1 : pageCustomer.number + 1})}"-->
+<!--                       class="btn btn-secondary mx-1">Next</a>-->
+<!--                    <a th:href="@{/customer/list(pageNumber=${pageCustomer.totalPages - 1})}"-->
+<!--                       class="btn btn-secondary mx-1">Last</a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </article>-->
+<!--    </div>-->
+<!--</main>-->
+<main class="container mt-5">
+    <div layout:fragment="content">
+        <article class="container-xxl bd-gutter my-md-4 bd-layout">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="center">Danh sách khách hàng</h1>
+                <a href="/customer/create" class="btn btn-primary btn-primary-customer">Thêm mới khách hàng</a>
+            </div>
+
+            <!-- Search Bar -->
+            <form id="formSearchCustomer" class="mb-4">
+                <div class="input-group">
+                    <input type="text" id="keyWordSearch" class="form-control" placeholder="Tìm kiếm..."
+                           aria-label="Tìm kiếm">
+                    <button class="btn btn-primary btn-primary-customer" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+
+
+            <!-- Table -->
+            <!--            <table class="table table-hover table-striped align-middle text-center">-->
+            <!--                <thead class="table-dark">-->
+            <!--                <tr>-->
+            <!--                    <th>Ảnh</th>-->
+            <!--                    <th>Tên khách hàng</th>-->
+            <!--                    <th>Giới tính</th>-->
+            <!--                    <th>Địa chỉ</th>-->
+            <!--                    <th>Trạng thái</th>-->
+            <!--                    <th>Hành động</th>-->
+            <!--                </tr>-->
+            <!--                </thead>-->
+            <!--                <tbody>-->
+            <!--                <tr th:each="customer, index: ${pageCustomer}">-->
+            <!--                    <td>-->
+            <!--                        <img th:src="'https://res.cloudinary.com/dfy4umpja/image/upload/v1728721025/'+${customer.image}"-->
+            <!--                             style="height: 50px" alt="Ảnh khách hàng" />-->
+            <!--                    </td>-->
+            <!--                    <td th:text="${customer.fullName}"></td>-->
+            <!--                    <td th:text="${customer.gender == 1 ? 'Nam' : 'Nữ'}"></td>-->
+            <!--                    <td th:text="${customer.addRess}"></td>-->
+            <!--&lt;!&ndash;                    <td th:text="${customer.status}"></td>&ndash;&gt;-->
+            <!--&lt;!&ndash;                    <td th:text="${customer.status.equals('1') ? 'Hoạt động' : 'Ngưng hoạt động'}"></td>&ndash;&gt;-->
+            <!--                    <td th:text="${customer.status == 1 ? 'Hoạt động' : 'Ngưng hoạt động'}"></td>-->
+            <!--                    <td>-->
+            <!--                        <a th:href="@{/customer/edit/{id}(id=${customer.id})}"-->
+            <!--                           class="btn btn-sm btn-outline-primary btn-outline-primary-customer me-1">-->
+            <!--                            <i class="fas fa-edit" title="Sửa"></i>-->
+            <!--                        </a>-->
+            <!--                        <a th:href="@{/customer/detail/{id}(id=${customer.id})}"-->
+            <!--                           class="btn btn-sm btn-outline-info btn-outline-info-customer me-1">-->
+            <!--                            <i class="fas fa-info-circle" title="Chi tiết"></i>-->
+            <!--                        </a>-->
+            <!--                        <a th:href="@{/customer/delete/{id}(id=${customer.id})}"-->
+            <!--                           class="btn btn-sm btn-outline-danger btn-outline-danger-customer"-->
+            <!--                           onclick="return confirm('Bạn có chắc chắn muốn xóa khách hàng?')">-->
+            <!--                            <i class="fas fa-trash" title="Xóa"></i>-->
+            <!--                        </a>-->
+            <!--                    </td>-->
+            <!--                </tr>-->
+            <!--                </tbody>-->
+            <!--            </table>-->
+
+            <!--            <table class="table table-customer table-hover table-customer-hover table-striped table-customer-striped align-middle text-center">-->
+            <!--                <thead class="table-dark table-customer-dark">-->
+            <!--                <tr>-->
+            <!--                    <th>Ảnh</th>-->
+            <!--                    <th>Tên khách hàng</th>-->
+            <!--                    <th>Giới tính</th>-->
+            <!--                    <th>Địa chỉ</th>-->
+            <!--                    <th>Trạng thái</th>-->
+            <!--                    <th>Hành động</th>-->
+            <!--                </tr>-->
+            <!--                </thead>-->
+            <!--                <tbody>-->
+            <!--                <tr th:each="customer, index: ${pageCustomer}">-->
+            <!--                    <td>-->
+            <!--                        <img th:src="'https://res.cloudinary.com/dfy4umpja/image/upload/v1728721025/'+${customer.nameImage}"-->
+            <!--                             style="height: 50px" alt="Ảnh khách hàng" />-->
+            <!--                    </td>-->
+            <!--                    <td th:text="${customer.fullName}"></td>-->
+            <!--                    <td th:text="${customer.gender == 1 ? 'Nam' : 'Nữ'}"></td>-->
+            <!--                    <td th:text="${customer.addRessDetail}"></td>-->
+            <!--                    &lt;!&ndash;                    <td th:text="${customer.status}"></td>&ndash;&gt;-->
+            <!--                    &lt;!&ndash;                    <td th:text="${customer.status.equals('1') ? 'Hoạt động' : 'Ngưng hoạt động'}"></td>&ndash;&gt;-->
+            <!--                    <td th:text="${customer.status == 1 ? 'Hoạt động' : 'Ngưng hoạt động'}"></td>-->
+            <!--                    <td>-->
+            <!--                        <a th:href="@{/customer/edit/{id}(id=${customer.id})}"-->
+            <!--                           class="btn btn-sm btn-outline-primary btn-outline-primary-customer me-1">-->
+            <!--                            <i class="fas fa-edit" title="Sửa"></i>-->
+            <!--                        </a>-->
+            <!--                        <a th:href="@{/customer/detail/{id}(id=${customer.id})}"-->
+            <!--                           class="btn btn-sm btn-outline-info btn-outline-info-customer me-1">-->
+            <!--                            <i class="fas fa-info-circle" title="Chi tiết"></i>-->
+            <!--                        </a>-->
+            <!--                        <a th:href="@{/customer/delete/{id}(id=${customer.id})}"-->
+            <!--                           class="btn btn-sm btn-outline-danger btn-outline-danger-customer"-->
+            <!--                           onclick="return confirm('Bạn có chắc chắn muốn xóa khách hàng?')">-->
+            <!--                            <i class="fas fa-trash" title="Xóa"></i>-->
+            <!--                        </a>-->
+            <!--                    </td>-->
+            <!--                </tr>-->
+            <!--                </tbody>-->
+            <!--            </table>-->
+
+
+            <table class="table-customer">
+                <thead>
+                <tr>
+                    <th style="width: 70px">Ảnh</th>
+                    <th>Tên khách hàng</th>
+                    <th>Giới tính</th>
+                    <th>Địa chỉ</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
+                </tr>
+                </thead>
+                <tbody id="table-customer">
+
+                </tbody>
+            </table>
+            <div class="pagination-section">
+                <!-- Phân trang 2 -->
+                <div class="pagination-custom d-flex justify-content-center">
+                    <ul id="customerPageMax-customer-index" class="pagination"></ul>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+<!--            <div class="d-flex justify-content-center mt-4">-->
+<!--                <nav aria-label="Pagination">-->
+<!--                    <ul class="pagination">-->
+<!--                        <li class="page-item">-->
+<!--                            <a th:href="@{/customer/list?pageNumber=0}" class="page-link">First</a>-->
+<!--                        </li>-->
+<!--                        <li class="page-item">-->
+<!--                            <a th:href="@{/customer/list(pageNumber=${pageCustomer.first ? 0 : pageCustomer.number - 1})}"-->
+<!--                               class="page-link">Previous</a>-->
+<!--                        </li>-->
+<!--                        <li class="page-item"-->
+<!--                            th:each="pageNumber : ${#numbers.sequence(0, pageCustomer.totalPages - 1)}"-->
+<!--                            th:classappend="${pageNumber == pageCustomer.number} ? 'active'">-->
+<!--                            <a th:href="@{/customer/list(pageNumber=${pageNumber})}" class="page-link"-->
+<!--                               th:text="${pageNumber + 1}"></a>-->
+<!--                        </li>-->
+<!--                        <li class="page-item">-->
+<!--                            <a th:href="@{/customer/list(pageNumber=${pageCustomer.last ? pageCustomer.totalPages - 1 : pageCustomer.number + 1})}"-->
+<!--                               class="page-link">Next</a>-->
+<!--                        </li>-->
+<!--                        <li class="page-item">-->
+<!--                            <a th:href="@{/customer/list(pageNumber=${pageCustomer.totalPages - 1})}"-->
+<!--                               class="page-link">Last</a>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </nav>-->
+<!--            </div>-->
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script src="/ajax/customer/customerAjax.js"></script>
+            <input type="hidden" id="toastMessage" th:value="${message}">
+            <input type="hidden" id="toastCheck" th:value="${check}">
+        </article>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

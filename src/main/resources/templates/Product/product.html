@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{Home/home_manege}">
+<head>
+    <title>
+        Danh sách sản phẩm
+    </title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <article class=" bd-gutter mt-5 my-md-4 bd-layout">
+        <div  class="container-product">
+
+            <div class="header-product">
+                Danh sách sản phẩm
+            </div>
+
+            <div class="search-bar-product">
+                <select class="search-select-product" id="items-per-page" onchange="updateItemsPerPage(event)">
+                    <option value="5">5/1</option>
+                    <option value="10" selected>10/1</option>
+                    <option value="15">15/1</option>
+                    <option value="20">20/1</option>
+                    <option value="25">ALL</option>
+                </select>
+                <select id="search-select-product" class="search-select-product" onchange="fetchProductsByCategoryAndSearch(this.value, document.querySelector('.search-input-product').value)">
+                    <option value="0">Tất cả</option>
+                    <th:block th:each="category : ${categoryList}">
+                        <option th:value="${category.id}" th:text="${category.nameCategory}"></option>
+                    </th:block>
+                </select>
+                <input type="text" class="search-input-product" placeholder="Tìm kiếm">
+                <div class="icon-group-product">
+                    <i class="fa fa-list icon-product fa-list-product" aria-hidden="true"
+                       onclick="showListViewProduct()"></i>
+                    <i class="fa fa-th icon-product fa-th-product" aria-hidden="true"
+                       onclick="showGridViewProduct()"></i>
+                </div>
+            </div>
+            <div style="display: flex; margin-bottom: 20px">
+                <button data-bs-toggle="modal" data-bs-target="#confirm-export-product-modal" id="btn-export-product"
+                        class="btn-export-product" style="display: none">XUẤT EXCEL
+                </button>
+                <button data-bs-toggle="modal" data-bs-target="#confirm-delete-product-modal" id="btn-delete-product"
+                        class="btn-delete-product" style="display: none">XÓA BỎ
+                </button>
+                <button data-bs-toggle="modal" data-bs-target="#confirm-restore-product-modal" id="btn-restore-product"
+                        class="btn-restore-product" style="display: none">KHÔI PHỤC
+                </button>
+                <button id="btn-cancel-product" class="btn-cancel-product" onclick="cancelButton()" style="display: none">HỦY</button>
+                <button id="btn-findProduct-delete" class="btn-findProduct-delete"
+                        onclick="fetchProductsByCategoryAndSearch(0,'',`/product-api/findProductDelete?idCategory=${0}&searchTerm=${''}`)">
+                    Danh sách đã xóa
+                </button>
+                <button style="display: none" id="btn-findProduct-active" class="btn-findProduct-active"
+                        onclick="fetchProductsByCategoryAndSearch(0,'',`/product-api/search`)">Danh sách hoạt động
+                </button>
+            </div>
+
+            <div class="form-group-product" style="display: none">
+                <div th:each="product : ${productList}" id="form-control-product" class="form-control-product">
+                    <p th:text="${product.nameProduct}"></p>
+                    <div class="image-slider">
+                        <div class="slides">
+                            <div ondblclick="viewProductDetail([[${product.id}]])" class="slide" th:each="image : ${product.images}">
+                                <img  th:src="'https://res.cloudinary.com/dfy4umpja/image/upload/v1728725582/' + ${image.nameImage}" alt="Ảnh sản phẩm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table-product">
+                <thead>
+                <tr>
+                    <th style="width: 30px;">
+                        <input type="checkbox" id="select-all-product" onclick="toggleSelectAllProduct(this)">
+                    </th>
+                    <th style="width: 70px">Ảnh</th>
+                    <th style="width: 70px">Mã</th>
+                    <th style="width: 150px">Tên</th>
+                    <th style="width: 150px">Chất liệu</th>
+                    <th style="width: 150px">Hãng</th>
+                    <th style="width: 130px">Xuất xứ</th>
+                    <th style="width: 150px">Loại đế</th>
+                    <th style="width: 200px">Mô tả</th>
+                    <th style="width: 100px">Trạng thái</th>
+                    <th style="width: 30px"></th>
+                </tr>
+                </thead>
+                <tbody id="product-table-body">
+                </tbody>
+            </table>
+            <h3 id="nullProduct" style="display: none;">Không tìm thấy sản phẩm nào</h3>
+
+            <div id="pagination-controls" class="pageable-product">
+                <ul id="pagination-product" class="pagination-product"></ul>
+            </div>
+
+            <a class="add-button-product" href="/staff/product/create"><i
+                    class="fas fa-plus"></i> Thêm sản phẩm</a>
+        </div>
+
+        <div class="modal fade" id="confirm-create-bill-modal" tabindex="-1"
+             aria-labelledby="confirmCreateBillModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="confirmCreateBillModalLabel">
+                            Xác nhận xóa sản phẩm
+                        </h1>
+                    </div>
+                    <div class="modal-body">
+                        Bạn muốn xóa sản phẩm ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button onclick="updateStatus(null, 0)" type="submit" class="btn btn-success"
+                                data-bs-dismiss="modal"
+                                aria-label="Close">Đồng ý
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="confirm-delete-product-modal" tabindex="-1"
+             aria-labelledby="confirmDeleteProductModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="confirmDeleteProductModalLabel">
+                            Xác nhận xóa sản phẩm
+                        </h1>
+                    </div>
+                    <div class="modal-body">
+                        Bạn có chắc chắn muốn xóa các sản phẩm đã chọn ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button onclick="deleteMultipleProduct()" type="submit" class="btn btn-success"
+                                data-bs-dismiss="modal"
+                                aria-label="Close">Đồng ý
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="confirm-export-product-modal" tabindex="-1"
+             aria-labelledby="confirmExportProductModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="confirmExportProductModalLabel">
+                            Xác nhận xuất Excel sản phẩm
+                        </h1>
+                    </div>
+                    <div class="modal-body">
+                        Chắc chắn muốn xuất Excel các sản phẩm đã chọn ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button onclick="exportExcelProduct()" type="submit" class="btn btn-success"
+                                data-bs-dismiss="modal"
+                                aria-label="Close">Đồng ý
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="confirm-restore-product-modal" tabindex="-1"
+             aria-labelledby="confirmRestoreProductModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="confirmRestoreProductModalLabel">
+                            Xác nhận khôi phục sản phẩm
+                        </h1>
+                    </div>
+                    <div class="modal-body">
+                        Chắc chắn muốn khôi phục các sản phẩm đã chọn ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button onclick="restoreMultipleProduct()" type="submit" class="btn btn-success"
+                                data-bs-dismiss="modal"
+                                aria-label="Close">Đồng ý
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="confirm-restoreOne-product-modal" tabindex="-1"
+             aria-labelledby="confirmRestoreOneProductModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="confirmRestoreOneProductModalLabel">
+                            Xác nhận khôi phục sản phẩm
+                        </h1>
+                    </div>
+                    <div class="modal-body">
+                        Bạn muốn khôi phục sản phẩm ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button onclick="updateStatus(1, 1)" type="submit" class="btn btn-success"
+                                data-bs-dismiss="modal"
+                                aria-label="Close">Đồng ý
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <input type="hidden" id="toastMessage" th:value="${message}">
+        <input type="hidden" id="toastCheck" th:value="${check}">
+    </article>
+    <script th:src="@{/js/product/product.js}" type="text/javascript"></script>
+</div>
+</body>
+
+</html>

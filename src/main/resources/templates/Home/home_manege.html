@@ -1,0 +1,518 @@
+<!doctype html>
+<!--<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">-->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Shop Giày Onepoly</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/charts/loader.js" type="text/javascript"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <link rel="stylesheet" href="/loading/styleHomeManege.css" type="text/css">
+    <link rel="stylesheet" href="/css/bill/styleBill.css" type="text/css">
+
+    <link rel="stylesheet" th:href="@{/toast/styleToast.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/toastV2/style.css}" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
+    <link rel="stylesheet" th:href="@{/css/bill/styleSelect2Tag.css}" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <link rel="stylesheet" th:href="@{/pagination/stylePagination.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/attribute/attribute.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/voucher/home.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/sale_product/home.css}" type="text/css">
+
+    <link rel="stylesheet" th:href="@{/css/profile/profile_home.css}" type="text/css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+
+    <link rel="stylesheet" th:href="@{/css/product/product.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/product/productDetail.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/product/create.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/product/createProductDetail.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/product/updateProduct.css}" type="text/css">
+
+    <link rel="stylesheet" th:href="@{/css/customer/list.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/staff/list.css}" type="text/css">
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+    <link rel="stylesheet" th:href="@{/css/homeManage/homeManageStyle.css}" type="text/css">
+    <script src="/loading/actionLoading.js"></script>
+</head>
+<body>
+<!--<nav class="navbar border-bottom border-3 border-dark"-->
+<!--     style="background: #FFF8DC; position: fixed; top: 0; width: 100%; z-index: 1000;">-->
+<!--    <div class="container-fluid">-->
+<!--        <i class="bi bi-box-seam" style="font-size: 300%; color: rgb(0,0,0);" data-bs-toggle="offcanvas"-->
+<!--           data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"></i>-->
+<!--        <a class="navbar-brand" href="#">Sneaker Onepoly</a>-->
+<!--    </div>-->
+<!--</nav>-->
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner-grow text-center" role="status" style="width: 200px; height: 200px;">
+        <img src="/img/Logo.png" alt="Loading" class="loading-image">
+    </div>
+</div>
+<!--&lt;!&ndash; tab &ndash;&gt;-->
+<!--<div>-->
+<!--    <div style="background-color: rgba(22, 48, 134, 0.445); color: white;"-->
+<!--         class="offcanvas offcanvas-start border-end" tabindex="-1" id="offcanvasExample"-->
+<!--         aria-labelledby="offcanvasExampleLabel">-->
+
+<!--        <div class="offcanvas-header d-flex justify-content-between align-items-center border-bottom position-relative">-->
+<!--            <a href="#" class="offcanvas-title text-decoration-none text-white fs-3" id="offcanvasExampleLabel">-->
+<!--                <div th:if="${staffInfo == null}">-->
+<!--                    <script>-->
+<!--                        window.location.href = '/logout';-->
+<!--                    </script>-->
+<!--                </div>-->
+<!--                <div th:if="${staffInfo != null}">-->
+<!--                    <p>Tên: <span th:text="${staffInfo.fullName}"></span></p>-->
+<!--                    <p>Chức vụ: <span th:text="${staffInfo.role.nameRole}"></span></p>-->
+<!--                </div>-->
+<!--                <br>-->
+<!--                <span>Chúc bạn một ngày tốt lành!</span>-->
+
+<!--            </a>-->
+<!--            <i class="bi bi-x-square position-absolute m-2" style="font-size: 300%; color: white; top: 0; right: 0;"-->
+<!--               data-bs-dismiss="offcanvas" aria-label="Close"></i>-->
+<!--        </div>-->
+
+
+<!--        <div class="offcanvas-body text-start">-->
+<!--            <p class="border-bottom">-->
+<!--                <a href="/chart/form" class="text-decoration-none text-white fs-3 bg-transparent">-->
+<!--                    Thống kê-->
+<!--                </a>-->
+<!--            </p>-->
+
+<!--            <p class="border-bottom">-->
+<!--                <a class="text-decoration-none text-white fs-3 bg-transparent" data-bs-toggle="collapse"-->
+<!--                   href="#sanPham" role="button" aria-expanded="false" aria-controls="collapseExample">-->
+<!--                    Quản lý sản phẩm-->
+<!--                </a>-->
+<!--            </p>-->
+
+<!--            <div class="collapse" id="sanPham">-->
+<!--                <div class="card card-body" style="background-color: rgba(255, 255, 255, 0.445); color: white;">-->
+<!--                    <a class="dropdown-item text-decoration-none text-white fs-6 bg-transparent" href="/staff/product">-->
+<!--                        Sản phẩm-->
+<!--                    </a>-->
+<!--                    &lt;!&ndash; Thuộc tính sản phẩm &ndash;&gt;-->
+<!--                    <a class="dropdown-item text-decoration-none text-white fs-6 bg-transparent"-->
+<!--                       data-bs-toggle="collapse" href="#thuocTinh" role="button" aria-expanded="false"-->
+<!--                       aria-controls="thuocTinh">-->
+<!--                        Thuộc tính sản phẩm-->
+<!--                    </a>-->
+<!--                    <hr>-->
+<!--                    &lt;!&ndash; Các tùy chọn con (ẩn/hiện khi bấm vào Thuộc tính sản phẩm) &ndash;&gt;-->
+<!--                    <div class="collapse" id="thuocTinh">-->
+<!--                        <a class="dropdown-item text-decoration-none text-white fs-6 bg-transparent sub-option"-->
+<!--                           href="#">-->
+<!--                            Hãng-->
+<!--                        </a>-->
+<!--                        <a class="dropdown-item text-decoration-none text-white fs-6 bg-transparent sub-option"-->
+<!--                           href="#">-->
+<!--                            Chất liệu-->
+<!--                        </a>-->
+<!--                        <a class="dropdown-item text-decoration-none text-white fs-6 bg-transparent sub-option"-->
+<!--                           href="#">-->
+<!--                            Xuất xứ-->
+<!--                        </a>-->
+<!--                        <a class="dropdown-item text-decoration-none text-white fs-6 bg-transparent sub-option"-->
+<!--                           href="#">-->
+<!--                            Danh mục-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <p class="border-bottom">-->
+<!--                <a class="text-decoration-none text-white fs-3 bg-transparent" data-bs-toggle="collapse"-->
+<!--                   href="#voucher" role="button" aria-expanded="false" aria-controls="collapseExample">-->
+<!--                    Quản lý phiếu giảm giá-->
+<!--                </a>-->
+<!--            </p>-->
+
+<!--            <div class="collapse" id="voucher">-->
+<!--                <div class="card card-body" style="background-color: rgba(255, 255, 255, 0.445); color: white;">-->
+<!--                    <a class="dropdown-item text-decoration-none text-white fs-6 bg-transparent" href="/voucher/list">-->
+<!--                        Danh sách phiếu giảm giá-->
+<!--                    </a>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <p class="border-bottom">-->
+<!--                <a class="text-decoration-none text-white fs-3 bg-transparent" data-bs-toggle="collapse"-->
+<!--                   href="#sale-product" role="button" aria-expanded="false" aria-controls="collapseExample">-->
+<!--                    Quản lý đợt giảm giá-->
+<!--                </a>-->
+<!--            </p>-->
+
+<!--            <div class="collapse" id="sale-product">-->
+<!--                <div class="card card-body" style="background-color: rgba(255, 255, 255, 0.445); color: white;">-->
+<!--                    <a class="dropdown-item text-decoration-none text-white fs-6 bg-transparent" href="/sale-product/list">-->
+<!--                        Danh sách đợt giảm giá-->
+<!--                    </a>-->
+<!--                </div>-->
+<!--                <div class="card card-body" style="background-color: rgba(255, 255, 255, 0.445); color: white;">-->
+<!--                    <a class="dropdown-item text-decoration-none text-white fs-6 bg-transparent" href="/sale-product/create">-->
+<!--                        Thêm đợt giảm giá-->
+<!--                    </a>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; tab2 &ndash;&gt;-->
+<!--            <p class=" border-bottom">-->
+<!--                <a class="text-decoration-none text-white fs-3 bg-transparent" data-bs-toggle="collapse"-->
+<!--                   href="#user" role="button" aria-expanded="false" aria-controls="collapseExample">-->
+<!--                    Quản lý người dùng-->
+<!--                </a>-->
+<!--            </p>-->
+
+<!--            <div class="collapse" id="user">-->
+<!--                <div class="card card-body" style="background-color: rgba(255, 255, 255, 0.445); color: white;">-->
+
+<!--                    <p class="d-inline-flex gap-1">-->
+<!--                        <a class="dropdown-item text-decoration-none text-white fs-5 bg-transparent"-->
+<!--                           data-bs-toggle="collapse" href="#kh" role="button" aria-expanded="false"-->
+<!--                           aria-controls="collapseExample">-->
+<!--                            Quản lý khách hàng-->
+<!--                        </a>-->
+<!--                    </p>-->
+
+<!--                    <div class="collapse" id="kh">-->
+<!--                        <div class="card card-body"-->
+<!--                             style="background-color: rgba(255, 255, 255, 0.445); color: white;">-->
+<!--                            <a class="dropdown-item text-white " href="/customer/list">Danh sách khách hàng</a>-->
+<!--                            <a class="dropdown-item text-white " href="/customer/create">Thêm mới khách hàng</a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <p class="d-inline-flex gap-1">-->
+<!--                        <a class="dropdown-item text-decoration-none text-white fs-5 bg-transparent"-->
+<!--                           data-bs-toggle="collapse" href="#nv" role="button" aria-expanded="false"-->
+<!--                           aria-controls="collapseExample">-->
+<!--                            Quản lý Nhân viên-->
+<!--                        </a>-->
+<!--                    </p>-->
+
+<!--                    <div class="collapse" id="nv">-->
+<!--                        <div class="card card-body"-->
+<!--                             style="background-color: rgba(255, 255, 255, 0.445); color: white;">-->
+<!--                            <a class="dropdown-item text-white " href="/staff/list">Danh sách Nhân viên</a>-->
+<!--                            <a class="dropdown-item text-white " href="/staff/create">Thêm mới Nhân viên</a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <p class="d-inline-flex gap-1">-->
+<!--                        <a class="dropdown-item text-decoration-none text-white fs-5 bg-transparent"-->
+<!--                           data-bs-toggle="collapse" href="#chucVu" role="button" aria-expanded="false"-->
+<!--                           aria-controls="collapseExample">-->
+<!--                            Quản lý chức vụ-->
+<!--                        </a>-->
+<!--                    </p>-->
+
+<!--                    <div class="collapse" id="chucVu">-->
+<!--                        <div class="card card-body"-->
+<!--                             style="background-color: rgba(255, 255, 255, 0.445); color: white;">-->
+<!--                            <a class="dropdown-item text-white " href="">Danh sách chức vụ</a>-->
+<!--                            <a class="dropdown-item text-white " href="">Thêm mới chức vụ</a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; tab3 &ndash;&gt;-->
+
+
+<!--            &lt;!&ndash; tab4 &ndash;&gt;-->
+<!--            <p class="border-bottom">-->
+<!--                <a href="/staff/bill/home" class="text-decoration-none text-white fs-3 bg-transparent">-->
+<!--                    Bán hàng-->
+<!--                </a>-->
+<!--            </p>-->
+
+<!--            <p class="border-bottom">-->
+<!--                <a class="text-decoration-none text-white fs-3 bg-transparent"-->
+<!--                   th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/logout}">-->
+<!--                    Đăng xuất-->
+<!--                </a>-->
+<!--                &lt;!&ndash; Hiển thị nút Đăng nhập nếu người dùng chưa đăng nhập &ndash;&gt;-->
+<!--                <a class="text-decoration-none text-white fs-3 bg-transparent"-->
+<!--                   th:if="${#authorization.expression('!isAuthenticated()')}" th:href="@{/login/login}">-->
+<!--                    Đăng nhập-->
+<!--                </a>-->
+<!--            </p>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--&lt;!&ndash; Nội dung trang bắt đầu sau navbar &ndash;&gt;-->
+<!--<div class="mb-4" style="padding-top: 80px;">-->
+<!--    &lt;!&ndash; Nội dung khác của trang &ndash;&gt;-->
+<!--    &lt;!&ndash;    <th:block th:replace="~{${'/Bill/index'}}"></th:block>&ndash;&gt;-->
+<!--    <div layout:fragment="content">-->
+
+<!--    </div>-->
+<!--</div>-->
+<aside class="sidebar-custom-manage">
+    <div class="sidebar-custom-manage-header">
+        <img src="/img/homeManage/logoBillv2.png" alt="logo"/>
+        <h2>Onepoly</h2>
+    </div>
+    <div th:if="${staffInfo == null}">
+        <script>
+            window.location.href = '/logout';
+        </script>
+    </div>
+    <ul class="sidebar-custom-manage-links" style="margin: 0 !important;padding: 0 !important;">
+        <div th:if="${staffInfo.status == 1}">
+            <h4>
+                <span></span>
+                <div class="menu-separator"></div>
+            </h4>
+            <li>
+                <a href="/chart/form">
+                  <span class="material-symbols-outlined">
+                     monitoring
+                  </span>
+                    Thống kê
+                </a>
+            </li>
+            <h4>
+                <div class="menu-separator"></div>
+            </h4>
+            <li>
+                <a href="/staff/bill/home">
+                  <span class="material-symbols-outlined">
+                    store
+                  </span>
+                    Bán hàng
+                </a>
+            </li>
+            <h4>
+                <div class="menu-separator"></div>
+            </h4>
+            <li>
+                <a href="/staff/bill/manage-bill">
+                  <span class="material-symbols-outlined">
+                    receipt_long
+                  </span>
+                    Quản lý hóa đơn
+                </a>
+            </li>
+            <div th:if="${staffInfo.role.id == 1}">
+                <h4>
+                    <div class="menu-separator"></div>
+                </h4>
+                <li>
+                    <a href="/staff/product"><span class="material-symbols-outlined"> steps </span>Quản lý sản phẩm</a>
+                </li>
+                <h4>
+                    <div class="menu-separator"></div>
+                </h4>
+                <li>
+                    <a href="#" onclick="toggleSubmenu(event)">
+                        <span class="material-symbols-outlined"> view_cozy </span>Quản lý thuộc tính
+                    </a>
+                    <!-- Danh sách con ẩn/hiện -->
+                    <ul class="submenu">
+                        <li><a href="/attribute/color">Màu sắc</a></li>
+                        <li><a href="/attribute/size">Kích cỡ</a></li>
+                        <li><a href="/attribute/origin">Xuất sứ</a></li>
+                        <li><a href="/attribute/manufacturer">Nhà sản xuất</a></li>
+                        <li><a href="/attribute/material">Chất liệu</a></li>
+                        <li><a href="/attribute/sole">Loại đế</a></li>
+                        <li><a href="/attribute/category">Danh mục</a></li>
+                    </ul>
+                </li>
+                <h4>
+                    <div class="menu-separator"></div>
+                </h4>
+                <li>
+                    <a href="/staff-manage/list"><span class="material-symbols-outlined"> badge </span>Quản lý nhân viên</a>
+                </li>
+                <h4>
+                    <div class="menu-separator"></div>
+                </h4>
+                <li>
+                    <a href="/customer/list"><span class="material-symbols-outlined"> person </span>Quản lý khách hàng</a>
+                </li>
+
+
+                <h4>
+                    <div class="menu-separator"></div>
+                </h4>
+                <li>
+                    <a href="/voucher/list"><span class="material-symbols-outlined"> local_offer </span>Quản lý phiếu giảm giá</a>
+                </li>
+                <h4>
+                    <div class="menu-separator"></div>
+                </h4>
+                <li>
+                    <a href="/sale-product/list"><span class="material-symbols-outlined"> percent </span>Quản lý đợt giảm giá</a>
+                </li>
+                <h4>
+                    <div class="menu-separator"></div>
+                </h4>
+                <h4>
+                    <span></span>
+                    <div class="menu-separator"></div>
+                </h4>
+                <li>
+                    <a href="/staff/shift/home">
+                <span class="material-symbols-outlined">
+                    calendar_month
+                </span>
+                        Quản lý ca làm
+                    </a>
+                </li>
+            </div>
+            <h4>
+                <div class="menu-separator"></div>
+            </h4>
+            <li>
+                <a href="/staff/transactionVNPay/home">
+                  <span class="material-symbols-outlined">
+                    compare_arrows
+                  </span>
+                    Giao dịch
+                </a>
+            </li>
+        </div>
+        <div>
+            <h4>
+                <span>Tài khoản</span>
+                <div class="menu-separator"></div>
+            </h4>
+            <li th:if="${staffInfo.status == 1}">
+                <a href="" data-bs-toggle="modal" data-bs-target="#rollCallModel"><span class="material-symbols-outlined">person_check </span>Điểm danh</a>
+            </li>
+            <li>
+                <a href="/profile/staffProfile"><span class="material-symbols-outlined"> account_circle </span>Hồ sơ</a>
+            </li>
+            <li>
+                <a th:if="${#authorization.expression('!isAuthenticated()')}" th:href="@{/login/login}"><span
+                        class="material-symbols-outlined"> account_circle </span>Đăng nhập</a>
+            </li>
+            <li>
+                <a th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/logout}"><span
+                        class="material-symbols-outlined"> logout </span>Đăng xuất</a>
+            </li>
+        </div>
+    </ul>
+    <div class="user-account" th:if="${staffInfo != null}">
+        <div class="user-profile">
+            <img th:src="'https://res.cloudinary.com/dfy4umpja/image/upload/v1728721025/'+${staffInfo.image}" alt="Profile Image"/>
+            <div class="user-detail">
+                <h3 th:text="${staffInfo.fullName}"></h3>
+                <span th:text="${staffInfo.role.nameRole}"></span>
+                <br>
+                <span th:if="${staffInfo.status == 2}" class="text-danger" style="font-size: 0.65rem">
+                    Tài khoản đang ngừng hoạt động!
+                </span>
+                <span th:if="${staffInfo.status == 1}" style="font-size: 0.65rem;">Chúc bạn một ngày tốt lành!</span>
+            </div>
+        </div>
+    </div>
+</aside>
+
+
+<!-- Modal diem danh -->
+<div class="modal fade" id="rollCallModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="rollCallModelLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="rollCallModelLabel">Điểm danh</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Ghi chú:</label>
+                    <textarea class="form-control" rows="3" id="noteDataCheckInEndCheckOut"></textarea>
+                </div>
+            </div>
+            <hr style="border: 1px solid #000000;">
+            <div class="text-center mb-3" id="buttonCheckInAndCheckOut">
+                <button type="button" class="btn btn-outline-danger" onclick="checkOutStaff(1)">Điểm danh ra về</button>
+                <button type="button" class="btn btn-outline-success" onclick="checkInStaff()">Điểm danh vào làm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="margin-inline-start: 100px;margin-top: 20px;">
+    <div layout:fragment="content">
+
+    </div>
+
+</div>
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <!-- Đây là container nơi toast sẽ xuất hiện -->
+</div>
+
+<ul class="notifications-toast-custom"></ul>
+
+
+<div class="modal fade" id="accessDeniedModal" tabindex="-1" aria-labelledby="accessDeniedModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="accessDeniedModalLabel">Quyền truy cập bị từ chối</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Bạn không có quyền truy cập vào trang này. Vui lòng liên hệ với quản trị viên nếu bạn nghĩ đây là
+                lỗi.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+<script>
+    let popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    let popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl)
+    })
+</script>
+<!--scriploading-->
+<script th:src="@{/js/homeManage/action.js}" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.18.1/umd/index.js"></script>
+
+<script src="/js/Security/noAccess.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{/js/select2/multiselect2.js}" type="text/javascript"></script>
+
+<script src="/ajax/shift/rollCallAjax.js"></script>
+
+<script th:src="@{/toast/action.js}" type="text/javascript"></script>
+<script th:src="@{/toastV2/action.js}" type="text/javascript"></script>
+
+<script th:src="@{/js/bill/actionSelect2tag.js}" type="text/javascript"></script>
+
+<script th:src="@{/pagination/actionPagination.js}" type="text/javascript"></script>
+
+<script th:src="@{/js/bill/rollBackIndex.js}" type="text/javascript"></script>
+
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script src="https://www.gstatic.com/charts/loader.js" type="text/javascript"></script>
+<script th:src="@{/ajax/shift/rollCallAjax.js}" type="text/javascript"></script>
+
+</body>
+</html>

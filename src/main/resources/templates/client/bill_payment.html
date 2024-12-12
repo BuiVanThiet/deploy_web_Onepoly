@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{client/base}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Giỏ Hàng</title>
+    <link rel="stylesheet" href="path/to/your/styles.css">
+</head>
+<body>
+<div layout:fragment="content">
+    <section style="width: 80%;margin-left: 10%">
+        <input type="hidden" id="account-login" th:value="${accountLogin}">
+        <section class="cart-page">
+            <div class="container">
+                <p class="fw-light mb-0" style="margin-left: 5px">Giỏ hàng > Thông tin thanh toán</p>
+                <div style="margin-left: 55%;">
+                    <p>Hiện tại có <span id="totalQuantity" th:text="${cartItems.size()}"></span> sản phẩm trong giỏ
+                        hàng</p>
+                    <hr>
+                </div>
+                <div class="cart-container d-flex" style="gap: 10px;">
+                    <!-- Phần thông tin vận chuyển -->
+                    <div class="info-pay" style="flex: 0 0 50%;margin-top: -20px">
+                        <div th:if="${clientLogin == null}">
+                            <div class="info-transport" id="info-input">
+                                <div class="row"><!-- Header for customer information section -->
+                                    <div class="infor-enter-customer">
+                                        <h6 class="section-header text-secondary" style="margin-top: -5px">Thông tin
+                                            khách hàng</h6>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <input type="text" class="form-control" id="FullName"
+                                                       placeholder="Họ tên" required>
+                                                <span class="text-danger" id="error-fullname"></span>
+                                                <!-- Thông báo lỗi sẽ hiển thị ở đây -->
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <input type="email" class="form-control" id="Mail" placeholder="Mail"
+                                                       required>
+                                                <span class="text-danger" id="error-email"></span>
+                                                <!-- Thông báo lỗi email -->
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control" id="Phone" placeholder="SĐT"
+                                                       required>
+                                                <span class="text-danger" id="error-phone"></span>
+                                                <!-- Thông báo lỗi số điện thoại -->
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="info-shipping">
+                                        <h6 style="color: #727272;margin-top: 10px" class="section-header">Thông tin
+                                            giao hàng</h6>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <select id="province" class="form-select" required>
+                                                    <option value="">Chọn Tỉnh</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <select id="district" class="form-select" required>
+                                                    <option value="">Chọn Huyện</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <select id="ward" class="form-select" required>
+                                                    <option value="">Chọn Xã, Phường</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <span class="text-danger" id="error-select-address"></span>
+                                            </div>
+
+                                            <div class="col-md-12">
+                                            <textarea class="form-control" id="specificAddressNolog"
+                                                      placeholder="Địa chỉ nhận hàng mong muốn" required></textarea>
+                                            </div>
+                                            <span class="text-danger" id="error-address-specific"></span>
+                                            <div th:if="${errorAddress!=null}">
+                                            <span id="errorAddressFromControllerUnLogin"
+                                                  class="text-danger" th:text="${errorAddress}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div id="section-payment-method" class="section-loaded"
+                             style="padding: 5px 10px;: 1px solid #cecece; border-radius: 5px; height: auto; line-height: 1.2;">
+                            <div class="section-content">
+                                <div class="content-box">
+                                    <div class="section-header">
+                                        <h6 style="color: #727272; margin: 5px 0;" class="section-title">Phương thức
+                                            thanh toán</h6>
+                                    </div>
+                                    <div class="radio-wrapper content-box-row" style="margin: 5px 0;">
+                                        <label class="radio-label" for="payment_method_code">
+                                            <div class="radio-input payment-method-checkbox" style="margin-right: 5px;">
+                                                <input type="radio" class="value-payment-method"
+                                                       id="payment_method_code" name="payment_method_id" value="1"
+                                                       checked>
+                                            </div>
+                                            <div class="radio-content-input"
+                                                 style="display: flex; align-items: center; gap: 10px;">
+                                                <img class="main-img" src="/img/homeManage/ship_code.jpg" width="40px"
+                                                     height="40px">
+                                                <span class="radio-label-primary">Thanh toán khi nhận hàng (COD)</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div class="radio-wrapper content-box-row" style="margin: 5px 0;">
+                                        <label class="radio-label" for="payment_method_vnpay">
+                                            <div class="radio-input payment-method-checkbox" style="margin-right: 5px;">
+                                                <input type="radio" id="payment_method_vnpay"
+                                                       class="value-payment-method" name="payment_method_id" value="2">
+                                            </div>
+                                            <div class="radio-content-input"
+                                                 style="display: flex; align-items: center; gap: 10px;">
+                                                <img class="main-img"
+                                                     src="/img/homeManage/vnpay-logo-vinadesign-25-12-59-16.jpg"
+                                                     width="40px" height="40px">
+                                                <span class="radio-label-primary">Thanh toán bằng VNPAY</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div id="error-payment-method" class="text-danger"
+                                         style="font-size: 12px; margin-top: 5px;"></div>
+                                    <div th:if="${errorPayMethod!=null}">
+                                        <span id="errorPayMethodFromController" class="text-danger"
+                                              th:text="${errorPayMethod}" style="font-size: 12px;"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div th:if="${clientLogin !=null}" class="info-address">
+                            <div class="section-header d-flex justify-content-between align-items-center">
+                                <h5 class="section-title text-muted">Địa chỉ nhận hàng</h5>
+                                <button style="width: 150px" class="btn btn-change-address" data-bs-toggle="modal"
+                                        data-bs-target="#changeAddressModal">
+                                    <span>Thay đổi</span>
+                                    <i class="fas fa-sync-alt ms-1"></i>
+                                </button>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <p style="font-size: 14px" id="infoCustomer"
+                                       th:text="'Thông tin: '+${infoCustomer}+'.'"></p>
+                                    <p style="font-size: 14px" id="original-address"
+                                       th:text="'Địa chỉ: '+ ${originalAddress}+'.'"></p>
+                                    <span class="text-danger" id="error-address-for-bill"></span>
+                                </div>
+                            </div>
+                            <div th:if="${errorAddress!=null}">
+                                <span id="errorAddressFromControllerLogin" class="text-danger"
+                                      th:text="${errorAddress}"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="fullAddressCustomerLogin" name="fullAddressCustomerLogin"
+                           th:value="${fullAddressCustomerLogin}">
+                    <input type="hidden" class="form-control" name="addressShip" id="addressShip"
+                           required/>
+                    <div id="modal-change-address" class="modal-address">
+                        <div class="modal fade" id="changeAddressModal" tabindex="-1"
+                             aria-labelledby="changeAddressModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <!-- Modal Header -->
+                                    <div class="modal-header" style="background-color: #ffffff">
+                                        <h5 style="color: black" class="modal-title" id="changeAddressModalLabel">
+                                            <i class="bi bi-geo-alt-fill"
+                                               style="color: #2f2d2d; margin-right: 10px;"></i>
+                                            Thay đổi địa chỉ
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+
+                                    <!-- Modal Body -->
+                                    <div class="modal-body">
+
+                                        <div id="noData-info-address-for-customer"
+                                             style="display:none; text-align:center;">
+                                            <!-- Ảnh sẽ được hiển thị ở đây nếu không có dữ liệu -->
+                                        </div>
+                                        <div id="info-address-for-customer">
+                                        </div>
+                                        <!-- Nút Thêm Địa Chỉ Mới -->
+                                        <div class="add-new-address mt-3 text-center">
+                                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#addNewAddressModal" style="width: 100%">
+                                                <i class="bi bi-plus-circle me-1"></i>Thêm địa chỉ mới
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!-- Modal Footer -->
+                                    <div class="modal-footer">
+                                        <div class="d-flex gap-1" style="width: 100%;">
+                                            <!-- Nút Đóng -->
+                                            <button type="button"
+                                                    class="btn btn-secondary d-flex align-items-center justify-content-center flex-grow-1"
+                                                    data-bs-dismiss="modal" style="width: 50%;">
+                                                <i class="bi bi-x-circle me-2"></i> Đóng
+                                            </button>
+                                            <!-- Nút Lưu Thay Đổi -->
+                                            <button type="button"
+                                                    class="btn btn-primary d-flex align-items-center justify-content-center flex-grow-1 change-address"
+                                                    data-bs-dismiss="modal" style="width: 50%;">
+                                                <i class="bi bi-check-circle me-2"></i> Lưu thay đổi
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal update -->
+                    <div id="addNewAddressModal" class="modal fade" tabindex="-1" aria-labelledby="addNewAddressLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content shadow-lg">
+                                <!-- Modal Header -->
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title" id="addNewAddressLabel">
+                                        <i class="bi bi-plus-circle" style="margin-right: 10px;"></i> Thêm địa chỉ mới
+                                    </h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <!-- Modal Body -->
+                                <div class="modal-body bg-light">
+                                    <form id="addAddressForm">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label for="FullNameCreate" class="form-label">Họ và tên</label>
+                                                <input type="text" class="form-control" id="FullNameCreate"
+                                                       name="FullNameCreate" placeholder="Nhập họ và tên" required>
+                                                <div>
+                                                    <span id="full-name-create-err" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="PhoneCreate" class="form-label">Số điện thoại</label>
+                                                <input type="text" class="form-control" id="PhoneCreate"
+                                                       name="PhoneCreate" placeholder="Nhập số điện thoại" required>
+                                                <span id="phone-create-err" class="text-danger"></span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="MailCreate" class="form-label">Email</label>
+                                                <input type="email" class="form-control" id="MailCreate"
+                                                       name="MailCreate" placeholder="Nhập email" required>
+                                                <div>
+                                                    <span id="mail-create-err" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="specificAddressCreate" class="form-label">Địa chỉ cụ
+                                                    thể</label>
+                                                <input type="text" class="form-control" id="specificAddressCreate"
+                                                       name="specificAddressCreate" placeholder="Nhập địa chỉ cụ thể"
+                                                       required>
+                                                <div>
+                                                    <span id="specific-address-create-err" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="province-create" class="form-label">Tỉnh/Thành
+                                                    phố</label>
+                                                <select class="form-control" id="province-create"
+                                                        name="province-create"
+                                                        required>
+                                                    <option selected disabled>Chọn tỉnh/thành</option>
+                                                    <!-- Các option tỉnh thành -->
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="district-create" class="form-label">Quận/Huyện</label>
+                                                <select class="form-control" id="district-create"
+                                                        name="district-create"
+                                                        required>
+                                                    <option selected disabled>Chọn quận/huyện</option>
+                                                    <!-- Các option quận huyện -->
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="ward-create" class="form-label">Phường/Xã</label>
+                                                <select class="form-control" id="ward-create" name="ward-create"
+                                                        required>
+                                                    <option selected disabled>Chọn phường/xã</option>
+                                                    <!-- Các option phường xã -->
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <span id="selected-address-create-err" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <!-- Modal Footer -->
+                                <div class="modal-footer bg-light">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                        <i class="bi bi-x-circle" style="margin-right: 5px;"></i>Hủy
+                                    </button>
+                                    <button type="button" class="btn btn-primary" id="saveNewAddress"
+                                            onclick="createNewAddress()">
+                                        <i class="bi bi-check-circle" style="margin-right: 5px;"></i>Thêm địa chỉ
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="updateAddressModal" tabindex="-1"
+                         aria-labelledby="updateAddressModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content shadow-lg">
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title d-flex align-items-center" id="updateAddressModalLabel">
+                                        <i class="fas fa-map-marker-alt me-2"></i>
+                                        Cập nhật địa chỉ
+                                    </h5>
+                                    <button type="button" class="btn-close" style="color: #2d3748"
+                                            data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body bg-light">
+                                    <form id="updateAddressForm">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label for="FullNameUpdate" class="form-label">Họ và tên</label>
+                                                <input type="text" class="form-control" id="FullNameUpdate"
+                                                       name="FullNameUpdate" placeholder="Nhập họ và tên" required>
+                                                <div>
+                                                    <span id="full-name-update-err" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="PhoneUpdate" class="form-label">Số điện thoại</label>
+                                                <input type="text" class="form-control" id="PhoneUpdate"
+                                                       name="PhoneUpdate" placeholder="Nhập số điện thoại" required>
+                                                <div>
+                                                    <span id="phone-update-err" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="MailUpdate" class="form-label">Email</label>
+                                                <input type="email" class="form-control" id="MailUpdate"
+                                                       name="MailUpdate" placeholder="Nhập email" required>
+                                                <div>
+                                                    <span id="mail-update-err" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="specificAddressUpdate" class="form-label">Địa chỉ cụ
+                                                    thể</label>
+                                                <input type="text" class="form-control" id="specificAddressUpdate"
+                                                       name="specificAddressUpdate" placeholder="Nhập địa chỉ cụ thể"
+                                                       required>
+                                                <div>
+                                                    <span id="specific-address-update-err" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="province-update" class="form-label">Tỉnh/Thành phố</label>
+                                                <select class="form-control" id="province-update" name="province-update"
+                                                        required>
+                                                    <option selected disabled>Chọn tỉnh/thành</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="district-update" class="form-label">Quận/Huyện</label>
+                                                <select class="form-control" id="district-update" name="district-update"
+                                                        required>
+                                                    <option selected disabled>Chọn quận/huyện</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="ward-update" class="form-label">Phường/Xã</label>
+                                                <select class="form-control" id="ward-update" name="ward-update"
+                                                        required>
+                                                    <option selected disabled>Chọn phường/xã</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <span id="selected-address-update-err" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer bg-light">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng
+                                    </button>
+                                    <button type="button" class="btn btn-primary" onclick="updateAddress()">Cập nhật
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Phần danh sách giỏ hàng -->
+                    <div class="cart-list" style="flex: 0 0 50%;">
+                        <div th:each="item : ${cartItems}" class="position-relative" id="cart-list">
+                            <div class="item line-item d-flex align-items-center py-2" data-line="1">
+                                <!-- Hình ảnh và số lượng -->
+                                <div class="left position-relative me-3">
+                                    <div class="item-img">
+                                        <img th:src="'https://res.cloudinary.com/dfy4umpja/image/upload/v1728725582/' + ${item.imageName.get(0).nameImage}"
+                                             alt=""
+                                             style="width: 100px; height: auto; border-radius: 8px;">
+                                        <p class="tc line-item-qty text-center bg-light rounded-circle fw-bold position-absolute"
+                                           style="width: 30px; height: 30px; top: -5px; right: -5px; font-size: 0.8rem; line-height: 30px; border: 1px solid #ddd;"
+                                           th:text="${item.quantity}"></p>
+                                    </div>
+                                </div>
+                                <!-- Thông tin sản phẩm -->
+                                <div class="flex-grow-1">
+                                    <h5 class="mb-1 text-truncate" style="font-size: 1rem;"
+                                        th:text="${item.productName}"></h5>
+                                    <div class="item-price text-muted">
+                                        <span id="spanPriceCartItem" th:attr="data-price=${item.discountedPrice}"
+                                              th:text="${item.discountedPrice}"
+                                              class="fw-bold"
+                                              style="font-size: 0.9rem;"></span>
+                                    </div>
+
+                                    <div class="item-desc d-flex gap-2 mt-1" style="font-size: 0.8rem;">
+                                        <span class="variant-option text-muted">Màu sắc: <span
+                                                th:text="${item.colorName}" class="fw-normal"></span></span>
+                                        <span class="variant-option text-muted">Kích thước: <span
+                                                th:text="${item.sizeName}" class="fw-normal"></span></span>
+                                    </div>
+                                </div>
+                                <!-- Nút xóa -->
+                                <button type="button" class="btn-close ms-3" aria-label="Close"></button>
+                            </div>
+                            <hr class="my-2">
+                        </div>
+                        <div>
+                            <input type="hidden" id="weightShip" th:value="${weight}"/>
+                            <input type="hidden" id="addressCustomerLogin" th:value="${addressCustomerLogin}"/>
+                            <input type="hidden" id="IdWard" th:value="${IdWard}"/>
+                            <input type="hidden" id="IdDistrict" th:value="${IdDistrict}"/>
+                            <input type="hidden" id="IdProvince" th:value="${IdProvince}"/>
+                        </div>
+                        <div class="container-note">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <textarea style="border-radius: 4px" class="form-control" id="noteBill"
+                                              placeholder="Ghi chú cho cửa hàng"
+                                              rows="3" required></textarea>
+                                    <span class="text-danger" id="error-notebill"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="summary p-3 rounded">
+                            <div class="row">
+                                <div class="col-12">
+                                    <!-- Tổng tiền hàng -->
+                                    <div class="summary-item d-flex justify-content-between py-2 border-bottom">
+                                        <span>Tổng tiền hàng</span>
+                                        <span id="spanTotalPriceCartItem" class="fw-bold" th:text="${totalPrice}">Tổng giá tiền</span>
+                                    </div>
+                                    <!-- Giảm giá voucher -->
+                                    <div class="summary-item d-flex justify-content-between py-2 border-bottom">
+                                        <span>Giảm giá voucher</span>
+                                        <span id="spanPriceVoucher" th:text="${priceReducedShow}+'đ'">00 đ</span>
+                                    </div>
+                                    <!-- Phí vận chuyển -->
+                                    <div class="summary-item d-flex justify-content-between py-2 border-bottom">
+                                        <span>Phí vận chuyển</span>
+                                        <span id="spanShippingFee" name="shippingPrice">00 đ</span>
+                                    </div>
+                                    <!-- Tổng cộng -->
+                                    <div class="summary-total d-flex justify-content-between py-2">
+                                        <span class="fw-bold">TỔNG</span>
+                                        <span id="spanTotalPriceBill" class="fw-bold fs-5"
+                                              name="spanTotalPriceBill"></span>
+                                    </div>
+                                </div>
+                                <span class="text-danger" id="error-total-amount-bill"></span>
+                                <div th:if="${errorTotalAmountBill!=null}">
+                                            <span id="errorTotalAmountBillFromController"
+                                                  class="text-danger" th:text="${errorTotalAmountBill}"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-row justify-content-between mt-3">
+                            <a href="/onepoly/cart" id="btnQuayLai" class="btn btn-return-cart"
+                               style="padding: 5px 10px; font-size: 14px;height: 40px; line-height: 30px; text-align: center;">
+                                <span>Quay lại giỏ hàng</span>
+                            </a>
+                            <button id="btnDatHang" onclick="payBill()" class="btn btn-dat-hang"
+                                    style="padding: 5px 10px; font-size: 14px;  height: 40px; line-height: 30px; text-align: center;">
+                                <span>Đặt hàng</span>
+                            </button>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/decimal.js/10.3.1/decimal.min.js"></script>
+        <script th:src="@{/ajax/client/payment.js}" type="text/javascript"></script>
+        <script th:src="@{/js/client/ship_unlogin.js}" type="text/javascript"></script>
+        <script th:src="@{/js/client/ship_login.js}" type="text/javascript"></script>
+        <script th:src="@{/ajax/client/address_ship.js}" type="text/javascript"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    </section>
+
+</div>
+</body>
+</html>

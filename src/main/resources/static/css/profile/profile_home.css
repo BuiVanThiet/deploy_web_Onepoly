@@ -1,0 +1,80 @@
+.bodyProfile {
+    background-color: #f5f5f5; /* Màu nền chính */
+    min-height: 100vh; /* Đảm bảo chiều cao tối thiểu cho body */
+    display: flex;
+    align-items: center; /* Căn giữa theo chiều dọc */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    padding: 20px; /* Padding cho body */
+}
+
+.container-profile-info {
+    background-color: #ffffff; /* Màu nền trắng */
+    padding: 20px;
+    border: 1px solid #333; /* Đường viền đậm 1px */
+    border-radius: 10px; /* Bo tròn góc */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ cho container */
+}
+
+/*.description-profile-info {*/
+/*    margin-top: 0;*/
+/*    font-size: 14px;*/
+/*    color: #666;*/
+/*}*/
+
+.profile-info img {
+    display: block;
+    margin-top: 10px;
+    width: 100px; /* Kích thước ảnh hồ sơ */
+    height: 100px; /* Kích thước ảnh hồ sơ */
+    border-radius: 50%; /* Hình tròn cho ảnh hồ sơ */
+}
+
+.profile-info .upload-btn {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border: 1px solid #ccc; /* Đường viền cho nút upload */
+    border-radius: 5px;
+    display: inline-block;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Hiệu ứng chuyển màu */
+}
+
+.profile-info .upload-btn:hover {
+    background-color: #e0e0e0; /* Thay đổi màu nền khi hover */
+}
+
+.profile-info .small-text {
+    font-size: 0.9em;
+    color: #777;
+}
+
+.profile-info {
+    margin-left: auto; /* Căn bên phải */
+    margin-right: auto; /* Căn giữa */
+    text-align: center; /* Căn giữa nội dung trong profile-info */
+}
+
+#staff-avatar-preview {
+    width: 200px; /* Kích thước cố định chiều rộng */
+    height: 200px; /* Kích thước cố định chiều cao */
+    border-radius: 50%; /* Hình tròn cho ảnh đại diện */
+    object-fit: cover; /* Đảm bảo ảnh vừa khung mà không bị méo */
+    border: 2px solid #ddd; /* Đường viền xung quanh ảnh */
+    margin-bottom: 15px; /* Khoảng cách dưới ảnh */
+}
+
+.hidden {
+    display: none;
+}
+
+.btn-icon {
+    cursor: pointer;
+}
+
+.row {
+    align-items: center; /* Giữ cho label và input thẳng hàng */
+}
+
+.text-danger {
+    font-size: 0.81rem; /* Kích thước chữ nhỏ hơn cho thông báo lỗi */
+}

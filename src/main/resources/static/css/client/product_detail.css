@@ -1,0 +1,406 @@
+.thumbnail-active {
+    border: 3px solid #000000; /* Viền đen khi được chọn */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Hiệu ứng bóng đen */
+    transform: scale(1.05); /* Tăng kích thước nhẹ */
+    transition: all 0.3s ease;
+}
+
+/* Nút màu - đồng nhất với nút kích thước */
+.btn-color-circle {
+    width: 60px;
+    height: 60px;
+    /*margin-right: 10px;*/
+    background-color: #f8f9fa;
+    border: 1px solid #cccccc; /* Viền xám nhạt khi không chọn */
+    border-radius: 30px;
+    font-size: 10px;
+    text-align: center;
+    line-height: 56px;
+    transition: all 0.3s ease;
+}
+
+/* Nút kích thước - đồng nhất với nút màu */
+.btn-size-square {
+    width: 100%;
+    height: 50px;
+    /*margin-right: 10px;*/
+    background-color: #f8f9fa;
+    border: 1px solid #cccccc; /* Viền xám nhạt khi không chọn */
+    font-size: 12px;
+    text-align: center;
+    line-height: 45px;
+    transition: all 0.3s ease;
+}
+
+/* Khi hover */
+.btn-color-circle:hover,
+.btn-size-square:hover {
+    outline: none;
+    border: 2px solid #999999; /* Viền xám đậm hơn khi hover */
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); /* Hiệu ứng bóng mờ */
+}
+
+/* Khi focus */
+.btn-color-circle:focus,
+.btn-size-square:focus {
+    outline: none;
+    border: 2px solid #5d5b5b; /* Giống hover */
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+}
+
+
+/*Nút add và pay*/
+
+.add-cart {
+    display: flex;
+    flex-direction: column; /* Sắp xếp các phần tử theo cột */
+    gap: 10px; /* Khoảng cách giữa các nút */
+}
+
+.btn-add-cart, .btn-pay-now {
+    width: 100%; /* Chiều rộng 100% */
+    height: 50px; /* Đảm bảo chiều cao giống nhau */
+    line-height: 50px; /* Căn giữa chữ dọc */
+    font-size: 15px; /* Kích thước chữ */
+    border: 1px solid #343333;
+    border-radius: 2px; /* Góc bo tròn */
+    color: white; /* Màu chữ */
+    font-weight: lighter; /* Độ đậm của chữ */
+    background-color: #004698; /* Màu nền */
+    cursor: pointer; /* Hiển thị con trỏ như nút bấm */
+
+}
+
+.btn-add-cart:hover, .btn-pay-now:hover {
+    background-color: #053870; /* Màu nền khi hover */
+}
+
+.btn-pay-now {
+    background-color: #ffffff; /* Màu nền của nút "Mua ngay" */
+    color: black;
+    border: 1px solid #343333;
+}
+
+.btn-pay-now:hover {
+    background-color: #7e7c7c; /* Màu nền khi hover cho nút "Mua ngay" */
+    color: white;
+}
+
+.btn-add-cart:disabled, .btn-pay-now:disabled {
+    background-color: #f0f0f0; /* Màu nền xám khi vô hiệu hóa */
+    color: #cccccc; /* Màu chữ xám */
+    cursor: not-allowed; /* Con trỏ chuột khi di chuột qua bị vô hiệu hóa */
+    position: relative;
+}
+
+/* Hiệu ứng gạch ngang cho nút bị vô hiệu hóa khi hover */
+.btn-add-cart:disabled:hover, .btn-pay-now:disabled:hover {
+    border: 2px solid red; /* Viền đỏ khi hover */
+}
+
+.btn-add-cart:disabled:hover::after, .btn-pay-now:disabled:hover::after {
+    content: "❌"; /* Thêm icon "gạch giữa" */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: red; /* Màu đỏ */
+    font-size: 20px; /* Kích thước icon */
+    font-weight: bold;
+}
+
+
+/* Phong cách chung cho modal */
+.line-item-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.item-img {
+    flex: 0 0 35%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.item-info {
+    flex: 0 0 65%;
+    padding-left: 30px;
+}
+
+.right {
+    position: absolute;
+    left: 220px;
+}
+
+.modal .modal-dialog {
+    max-width: 700px;
+    max-height: 900px;
+    margin: auto;
+}
+
+.modal .modal-content {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.modal .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    background-color: #004698;
+}
+
+.modal .modal-title {
+    font-size: 18px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+.modal .modal-body {
+    padding: 10px 20px;
+}
+
+.item-img img {
+    width: 150px; /* Điều chỉnh kích thước hình ảnh nhỏ gọn */
+    height: 150px;
+}
+
+.item-info h3 {
+    font-size: 16px; /* Giảm kích thước tiêu đề */
+    margin-bottom: 5px;
+}
+
+.item-info div {
+    font-size: 14px; /* Giảm kích thước chữ các thông tin */
+}
+
+.item-quan button {
+    padding: 5px 10px;
+    font-size: 14px; /* Giảm kích thước nút */
+}
+
+.item-quantity {
+    width: 50px;
+    height: 30px;
+    font-size: 14px; /* Giảm kích thước input */
+}
+
+
+.message-error {
+    font-size: 12px; /* Kích thước chữ thông báo nhỏ hơn */
+}
+
+
+.item.line-item {
+    display: flex;
+    gap: 15px;
+    padding: 10px 0;
+}
+
+/* Phong cách cho phần hình ảnh sản phẩm */
+.item .left .item-img img {
+    width: 100px;
+    height: auto;
+    border-radius: 4px;
+}
+
+/* Phong cách cho phần thông tin sản phẩm */
+.item .right .item-info h3 {
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.price-current {
+    color: #d00909; /* Màu đỏ cho giá sau giảm */
+}
+
+.price-original {
+    color: #4f4e4e; /* Màu xám cho giá gốc */
+    font-weight: lighter; /* Font nhẹ cho giá gốc */
+    font-size: 0.9em; /* Giảm một chút kích thước cho giá gốc */
+}
+
+.line-through {
+    text-decoration: line-through;
+}
+
+/* Css cho số lượng sản phẩm */
+.item .item-quan {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.qty .qty-btn {
+    background-color: #ddd;
+    border: none;
+    padding: 5px 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.item-quantity {
+    width: 40px;
+    text-align: center;
+    border: none;
+    background-color: #f1f1f1;
+    font-size: 1rem;
+    margin: 0 5px;
+}
+
+/* Phong cách cho các nút trong modal */
+
+.popup_action {
+    margin-left: 30px;
+    margin-bottom: 200px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+    padding: 5px;
+}
+
+.popup_action > a {
+    width: 200px;
+}
+
+.popup_action a {
+    font-size: 14px;
+    margin-top: 10px;
+    padding: 8px 12px;
+}
+
+.popup_action .btn {
+    background-color: #007bff;
+    color: #fff;
+    height: 50px;
+    padding: 10px 15px;
+    border-radius: 2px;
+    text-decoration: none;
+}
+
+.popup_action .btn:hover {
+    background-color: #0056b3;
+}
+
+/*Show dot giam gia*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: none;
+}
+
+.box-show-sale {
+    margin-bottom: 16px;
+    padding: 16px 20px 16px 60px; /* Điều chỉnh padding để đảm bảo nội dung không quá sát mép */
+    color: #3415aa; /* Màu chữ */
+    background-color: rgba(52, 21, 170, 0.1); /* Màu nền nhẹ nhàng */
+    border: 1px solid rgba(52, 21, 170, 0.1); /* Đường viền nhẹ */
+    /*border-radius: 8px; !* Bo góc mềm mại *!*/
+    font-weight: 500;
+    font-size: 14px; /* Tăng kích thước chữ một chút */
+    line-height: 1.6;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ giúp nổi bật */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.box-show-sale:hover {
+    transform: scale(1.02); /* Tăng kích thước nhẹ khi hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Đổ bóng mạnh hơn khi hover */
+}
+
+.list-show-sale {
+    list-style: none;
+    padding: 0;
+}
+
+.list-show-sale li {
+    margin-bottom: 12px; /* Khoảng cách giữa các mục */
+    font-size: 14px;
+    color: #333; /* Màu chữ tối hơn */
+}
+
+.list-show-sale li:last-child {
+    margin-bottom: 0;
+}
+
+.list-show-sale li span {
+    font-weight: 600; /* Đổi font-weight cho các thẻ span */
+    color: #3415aa; /* Màu chữ cho các giá trị như "Thời gian", "Đến ngày" */
+}
+
+#voucher-value-new {
+    color: #d9431b; /* Màu đỏ cam cho giá trị giảm giá */
+    font-weight: bold;
+}
+
+#value-type {
+    font-weight: bold;
+    color: #3415aa; /* Màu chữ cho % hoặc VND */
+}
+
+#discount-type-new {
+    display: none; /* Ẩn thẻ hidden input */
+}
+
+.modal-title-chose-size {
+    color: black;
+    font-size: 15px; /* Kích thước chữ rất nhỏ */
+    text-decoration: underline; /* Gạch chân */
+}
+
+/*Mô tả  và chín    h sách*/
+/* Ẩn nội dung */
+.content-hidden {
+    display: none;
+}
+
+.toggle-content {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Hiệu ứng khi hiện/ẩn */
+.toggle-icon {
+    transition: transform 0.3s ease;
+}
+
+.toggle-icon.rotate {
+    transform: rotate(180deg);
+}
+
+/**/
+/* CSS cho nút "Đổi trả" */
+/* CSS cho nút "Đổi trả" */
+.btn-return-policy {
+    margin-top: 10px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Chiếm toàn bộ chiều rộng */
+    padding: 10px 20px; /* Padding nhỏ gọn */
+    border-radius: 2px; /* Bo góc nhẹ */
+    background-color: #b2b2b2; /* Màu nền xám nhẹ */
+    color: #ffffff; /* Màu chữ xám đậm */
+    text-decoration: none; /* Xóa gạch chân */
+    border: 1px solid #a9a9a9; /* Viền xám nhạt */
+    transition: all 0.3s ease; /* Hiệu ứng hover */
+}
+
+/* Hiệu ứng hover */
+.btn-return-policy:hover {
+    background-color: #8a8989; /* Màu nền xám đậm hơn khi hover */
+    color: #fffdfd; /* Màu chữ xám đậm hơn khi hover */
+    border-color: #808080; /* Màu viền xám đậm khi hover */
+}
+
+

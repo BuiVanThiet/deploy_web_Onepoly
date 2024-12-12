@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{Home/home_manege}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Male_Fashion Template">
+    <meta name="keywords" content="Male_Fashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Shop Giày Onepoly</title>
+</head>
+<body>
+<main>
+    <div layout:fragment="content">
+        <article class=" bd-gutter mt-5 my-md-4 bd-layout">
+            <!--            &lt;!&ndash; conten &ndash;&gt;-->
+            <!--            <ul class="nav nav-tabs" id="myTab" role="tablist">-->
+            <!--                <li class="nav-item" role="presentation">-->
+            <!--                    <button class="nav-link active" id="bill-tab" data-bs-toggle="tab" data-bs-target="#bill-tab-pane"-->
+            <!--                            type="button" role="tab" aria-controls="bill-tab-pane" aria-selected="true">-->
+            <!--                        Hóa đơn-->
+            <!--                    </button>-->
+            <!--                </li>-->
+            <!--                <li class="nav-item" role="presentation">-->
+            <!--                    <button class="nav-link" id="all-bill-tab" data-bs-toggle="tab" data-bs-target="#all-bill-tab-pane"-->
+            <!--                            type="button" role="tab" aria-controls="all-bill-tab-pane" aria-selected="false">-->
+            <!--                        Danh sách hóa đơn-->
+            <!--                    </button>-->
+            <!--                </li>-->
+            <!--            </ul>-->
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="bill-tab-pane" role="tabpanel" aria-labelledby="bill-tab"
+                     tabindex="0">
+                    <!-- nút ấn để thêm mới nhanh hóa đơn  -->
+                    <div class="m-3">
+                        <a href="/staff/bill/create" class="btn btn-outline-success"><i class="bi bi-bag-plus"></i> Thêm mới</a>
+                    </div>
+
+                    <!-- danh sách hóa đơn mới tạo -->
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <p class="mb-0 me-2">
+                                    Giỏ hàng
+                                </p>
+                                <div class="d-flex ms-auto" th:if="${bill.id != null}">
+                                    <button type="button"
+                                            class="btn btn-outline-info me-2"
+                                            data-bs-target="#product-modal"
+                                            data-bs-toggle="modal" onclick="resetHidenProductSale()">
+                                        <i class="bi bi-basket"></i> Thêm sản phẩm
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                                            data-bs-target="#camera-Modal" id="startCamera">
+                                        <i class="bi bi-qr-code-scan"></i> Quét QR sản phẩm
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="noDataBill" style="display:none; text-align:center;">
+                                <!-- Ảnh sẽ được hiển thị ở đây nếu không có dữ liệu -->
+                            </div>
+                            <ul class="nav nav-underline" id="billBody">
+
+                            </ul>
+                            <!-- bang san pham muon mua  -->
+                            <!--                            <div id="noDataContainer" style="display:none; text-align:center;">-->
+                            <!--                                &lt;!&ndash; Ảnh sẽ được hiển thị ở đây nếu không có dữ liệu &ndash;&gt;-->
+                            <!--                            </div>-->
+
+                            <!--                            <table class="table table-bordered mt-2" style="display:none;">-->
+                            <!--                                <thead>-->
+                            <!--                                <tr>-->
+                            <!--                                    <th scope="col">STT</th>-->
+                            <!--                                    <th scope="col">Ảnh</th>-->
+                            <!--                                    <th scope="col">Sản phẩm</th>-->
+                            <!--                                    <th scope="col">Giá</th>-->
+                            <!--                                    <th scope="col">Số lượng</th>-->
+                            <!--                                    <th scope="col">Tổng tiền</th>-->
+                            <!--                                    <th scope="col">Hành động</th>-->
+                            <!--                                </tr>-->
+                            <!--                                </thead>-->
+                            <!--                                <tbody id="tableBillDetail">-->
+                            <!--                                &lt;!&ndash; Dữ liệu sẽ được tải ở đây &ndash;&gt;-->
+                            <!--                                </tbody>-->
+                            <!--                            </table>-->
+
+                            <!--                            <div class="pagination-section">-->
+                            <!--                                &lt;!&ndash; Phân trang 2 &ndash;&gt;-->
+                            <!--                                <div class="pagination-custom d-flex justify-content-center">-->
+                            <!--                                    <ul id="billDetailPageMax" class="pagination"></ul>-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+                            <div th:replace="~{Bill/listProductBuy :: listProductBuy}"></div>
+
+                        </div>
+                    </div>
+                    <!-- noi lay thong tin nguoi dat hang  -->
+                    <div class="card mt-2" th:if="${bill.id != null}">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <p class="mb-0 me-2">
+                                    Thông tin khách hàng
+                                </p>
+                                <div class="d-flex ms-auto" style="width: 500px;">
+                                    <select  name="customer" id="clientSelect" class="multi-select-dropdown">
+
+                                    </select>
+                                    <input class="btn btn-outline-success ms-2" type="button" value="Thêm nhanh+" data-bs-target="#customer-Modal" data-bs-toggle="modal" onclick="loadAPIAddRess()">
+                                </div>
+
+                            </div>
+                            <!-- neu khach hang ko ton tai hoac la khach qua duong -->
+                            <p class="border border-dark rounded p-2 text-white bg-dark d-inline-block mt-2" th:if="${client == null}">
+                                Khách lẻ
+                            </p>
+                            <!-- neu khach hang da ton tai -->
+                            <p th:if="${client != null}">
+                                Họ tên            : <span th:text="${clientInformation.fullName}"></span>.<br>
+                                Email             : <span th:text="${clientInformation.email}"></span>.<br>
+                                Số điện thoại     : <span th:text="${clientInformation.numberPhone}"></span>.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Thông tin thanh toán  -->
+                    <div class="card mt-2" th:if="${bill.id != null}" id="paymentInformationCard">
+                        <div class="card-body">
+                            <p>Thông tin thanh toán</p>
+                            <div class="row">
+                                <!-- nếu mà nút switch được bật thì ẩn ảnh đi, hiện form thông tin khách hàng -->
+                                <div id="dynamic-content" class="col-6">
+                                    <!-- Nội dung sẽ thay đổi ở đây -->
+                                    <div class="d-flex justify-content-center align-items-center position-relative">
+                                        <div class="d-flex position-relative" style="width: 90%; padding-top: 90%;">
+                                            <img src="https://res.cloudinary.com/dfy4umpja/image/upload/v1732951076/4720aef9-53ba-41c9-ba1d-ca39c1637051.webp"
+                                                 alt="Lỗi ảnh"
+                                                 class="img-fluid position-absolute top-0 start-0 w-100 h-100"
+                                                 style="object-fit: cover;">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <!-- neu la khach le thi phai ẩn di  -->
+                                    <div class="form-check form-switch mb-3" th:if="${client != null}">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                               id="flexSwitchCheckDefault">
+                                        <label class="form-check-label" for="flexSwitchCheckDefault">Giao hàng</label>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <button class="btn btn-outline-secondary" type="button"
+                                                data-bs-target="#voucher-modal" data-bs-toggle="modal">
+                                            <i class="bi bi-dash"></i><i class="bi bi-currency-dollar"></i>Mã giảm giá
+                                        </button>
+                                        <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon"
+                                               aria-describedby="button-addon1" id="textVoucher" disabled>
+                                    </div>
+
+
+                                    <div class="mb-3" id="totalInfor">
+                                        <div class="d-flex justify-content-between">
+                                            <span>Tạm tính</span>
+                                            <span id="subTotal">100,000 VNĐ</span>
+                                        </div>
+                                        <div class="text-end" id="errorTotalAmount">
+                                            <span class="text-danger mb-3" >*Tối đa 1 đơn chỉ được dưới 100 tỷ. Đây là giới hạn được áp dụng để đảm bảo tính ổn định và khả năng xử lý hệ thống!</span>
+                                        </div>
+                                        <div id="discountContainer" class="mb-3" style="display: none;">
+                                            <div class="card position-relative">
+                                                <button type="button" onclick="getRemoveVoucherInBill()"
+                                                        class="btn-close position-absolute top-0 end-0 m-2"
+                                                        aria-label="Close"></button>
+                                                <div class="card-body">
+                                                    <span id="voucherName"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3 d-flex justify-content-between">
+                                            <span>Giảm giá</span>
+                                            <span id="discountAmount">10,000 VNĐ</span>
+                                        </div>
+                                        <div id="shipSpan">
+                                            <div class="mb-3 d-flex justify-content-between">
+                                                <span>Phí vận chuyển:</span>
+                                                <span id="shipMoney"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 d-flex justify-content-between">
+                                            <span>Tổng tiền</span>
+                                            <span id="totalAmount"></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- khi nào chọn phương thức thanh toán ms được hiện ô này, nếu ấn tiền mặt và ấn cả tiền mặt lẫn tài khoản mới được hiện -->
+                                    <!-- nếu mà nút switch được bật thì ẩn đi các nút thanh toán -->
+                                    <div id="formAtTheSpot">
+                                        <div class="mb-3">
+                                            <div id="formMoney">
+                                                <label class="form-label">Tiền Khách đưa</label>
+                                                <input type="text" class="form-control" id="cashClient">
+                                            </div>
+                                            <div class="card mt-2" id="formErorrCash">
+                                                <div class="card-body">
+                                                    <span class="text-danger" id="erorrCash"></span>
+                                                </div>
+                                            </div>
+                                            <div class="mt-3" id="surplusMoneySpan" style="display: none;">
+                                                <div class="mb-3 d-flex justify-content-between">
+                                                    <span>Tiền thừa:</span>
+                                                    <span id="surplusMoney"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3" id="form-payMethod-bill">
+                                        <div class="col-6 mb-3">
+                                            <button th:class="${'btn btn-outline-primary col-12 ' + (bill.paymentMethod == 1 ? 'active' : '')}" onclick="updateMethodPay(1)" id="cash" style="display: flex; align-items: center; justify-content: center;">
+                                                <i class="bi bi-cash" style="font-size: 30px; margin-right: 10px;"></i>
+                                                Tiền mặt
+                                            </button>
+                                        </div>
+                                        <div class="col-6 mb-3">
+                                            <button th:class="${'btn btn-outline-primary col-12 ' + (bill.paymentMethod == 2 ? 'active' : '')}" onclick="updateMethodPay(2)" id="accountMoney" style="display: flex; align-items: center; justify-content: center;">
+                                                <i class="bi bi-credit-card" style="font-size: 30px; margin-right: 10px;"></i>
+                                                Chuyển khoản
+                                            </button>
+                                        </div>
+                                        <div class="col-12 mb-3">
+                                            <button th:class="${'btn btn-outline-primary col-12 ' + (bill.paymentMethod == 3 ? 'active' : '')}" onclick="updateMethodPay(3)" id="accountMoneyAndCash" style="display: flex; align-items: center; justify-content: center;">
+                                                <i class="bi bi-cash" style="font-size: 30px;"></i>
+                                                <i class="bi bi-input-cursor"></i>
+                                                <i class="bi bi-credit-card" style="font-size: 30px; margin-right: 10px;"></i>
+                                                Tiền mặt và chuyển khoản
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <form th:action="${'/staff/bill/pay-ment/'+bill.id}" method="post" id="formPay">
+                                        <input type="hidden" name="shipMoney" id="moneyTransport" value="0">
+                                        <input type="hidden" name="surplusMoney" id="textSurplusMoney" value="0">
+                                        <input type="hidden" name="cashAccount" id="cashAccount" value="0">
+                                        <input type="hidden" name="cash" id="cashClientText" value="0">
+                                        <input type="hidden" name="customerShip" id="customerShip" value="Không có">
+                                        <input type="hidden" name="priceDiscount" id="priceDiscount" value="0">
+                                        <div class="mb-3">
+                                            <p>Ghi chú:</p>
+                                            <textarea name="note" class="form-control" id="notePayment"></textarea>
+                                            <div class="card mt-2" id="formErorrNote" style="display: none;">
+                                                <div class="card-body">
+                                                    <span class="text-danger" id="erorrNote"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <button id="createBill" type="button" class="btn btn-warning col-12"
+                                                    data-bs-target="#confirm-create-bill-modal" data-bs-toggle="modal">
+                                                <i class="bi bi-check2-square"></i> Tạo hóa đơn
+                                            </button>
+                                        </div>
+
+                                        <!-- xác nhận khi ấn tạo hóa đơn hiển thị xác nhaaj  -->
+                                        <div class="modal fade" id="confirm-create-bill-modal" tabindex="-1"
+                                             aria-labelledby="confirmCreateBillModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="confirmCreateBillModalLabel">
+                                                            Xác nhận tạo hóa đơn
+                                                        </h1>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Bạn muốn tạo hóa đơn này?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Không</button>
+                                                        <button type="submit" class="btn btn-success">Vâng</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- phần modal -->
+            <!-- modal phần nút thêm sản phẩm  -->
+            <div th:replace="~{Bill/listProductSele :: listProduct}"></div>
+            <!--            them so luong de mua-->
+
+
+            <!--            <div class="modal fade" id="exampleQuantity" aria-hidden="true" aria-labelledby="exampleQuantityLable" tabindex="-1">-->
+            <!--                <div class="modal-dialog modal-dialog-centered">-->
+            <!--                    <div class="modal-content">-->
+            <!--                        <div class="modal-header">-->
+            <!--                            <h1 class="modal-title fs-5" id="exampleQuantityLable">Số lượng</h1>-->
+            <!--                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+            <!--                        </div>-->
+            <!--                        <div class="modal-body">-->
+            <!--                            <form id="formBuy" method="post" action="/staff/bill/buy-product-detail">-->
+
+            <!--                                <input type="hidden" id="quantityProduct" name="quantityProduct">-->
+            <!--                                <input type="hidden" id="idProductDetail" name="idProductDetail">-->
+            <!--                                <input type="hidden" id="nameProduct">-->
+
+            <!--                                <div class="mb-3 row g-3 align-items-center">-->
+
+            <!--                                    <div class="col-auto">-->
+            <!--                                        <label class="form-label">Số lượng mua:</label>-->
+            <!--                                    </div>-->
+
+            <!--                                    <div class="col-auto">-->
+            <!--                                        <input type="text" class="form-control" id="quantity" name="quantityDetail">-->
+            <!--                                    </div>-->
+
+            <!--                                    <div class="col-auto">-->
+            <!--                                        <button disabled type="submit" class="btn btn-outline-primary col-auto" id="btnBuy"><i class="bi bi-plus"></i> Xác nhận</button>-->
+            <!--                                    </div>-->
+
+            <!--                                    <div class="col-12" id="errorCard">-->
+            <!--                                        <div class="card">-->
+            <!--                                            <div class="card-body">-->
+            <!--                                                <span class="text-danger" id="erorrQuantity">Mời nhập số lượng!</span>-->
+            <!--                                            </div>-->
+            <!--                                        </div>-->
+            <!--                                    </div>-->
+
+            <!--                                </div>-->
+            <!--                            </form>-->
+            <!--                        </div>-->
+
+            <!--                        <div class="modal-footer">-->
+            <!--                            <button class="btn btn-outline-secondary" data-bs-target="#product-modal" data-bs-toggle="modal" id="comeBackProduct"><i class="bi bi-arrow-counterclockwise"></i> Quay lại</button>-->
+            <!--                        </div>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--            </div>-->
+
+            <!-- modal phần nút quét sản phẩm  -->
+            <!--            <div class="modal fade" id="camera-Modal" tabindex="-1" aria-labelledby="cameraModalLabel"-->
+            <!--                 aria-hidden="true">-->
+            <!--                <div class="modal-dialog">-->
+            <!--                    <div class="modal-content">-->
+            <!--                        <div class="modal-header">-->
+            <!--                            <h1 class="modal-title fs-5" id="cameraModalLabel">-->
+            <!--                                Quét QR sản phẩm-->
+            <!--                            </h1>-->
+            <!--                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+            <!--                        </div>-->
+            <!--                        <div class="modal-body text text-center">-->
+            <!--                            <video id="video" width="300" height="200" autoplay></video>-->
+            <!--                        </div>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--            </div>-->
+
+            <!-- phần thêm mới khách hàng nếu khách muốn thêm nhanh  -->
+            <div class="modal fade" id="customer-Modal"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="clientModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="clientModalLabel">
+                                Thêm nhanh khách hàng
+                            </h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <form th:object="${customerShort}" th:action="${'/staff/bill/add-quickly-customer'}" method="post">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label">Họ và tên</label>
+                                        <input type="text" th:field="${customerShort.nameCustomer}" class="form-control" placeholder="Nhập họ và tên khách hàng ...">
+                                        <span class="text-danger" id="error-nameCustomer-short">Mời nhập tên khách hàng!</span>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label">Số điện thoại</label>
+                                        <input type="text" th:field="${customerShort.numberPhone}" class="form-control" placeholder="Nhập số điện thoại khách hàng ...">
+                                        <span class="text-danger" id="error-numberPhoneCustomer-short">Mời nhập SĐT khách hàng!</span>
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <label class="form-label">Email</label>
+                                        <input type="text" th:field="${customerShort.email}" class="form-control" placeholder="Nhập email khách hàng ...">
+                                        <span class="text-danger" id="error-emailCustomer-short">Mời nhập email khách hàng!</span>
+                                    </div>
+                                    <div class="col-4 mb-3">
+                                        <label class="form-label">Tỉnh/Thành phố</label>
+                                        <select class="form-select" id="provinceSelect-add-customer" name="province">
+                                            <option selected>Chọn tỉnh/thành phố</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-4 mb-3" id="districtSelectContainer-add-customer" style="display: none;">
+                                        <label class="form-label">Quận/Huyện</label>
+                                        <select class="form-select" id="districtSelect-add-customer" name="district">
+                                            <option selected>Chọn quận/huyện</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-4 mb-3" id="wardSelectContainer-add-customer" style="display: none;">
+                                        <label class="form-label">Xã/Phường/Thị Trấn</label>
+                                        <select class="form-select" id="wardSelect-add-customer" name="ward">
+                                            <option selected>Chọn xã/phường/thị trấn</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <p>Địa chỉ cụ thể: </p>
+                                        <textarea class="form-control" th:field="${customerShort.addResDetail}"></textarea>
+                                        <span class="text-danger" id="error-addResDetailCustomer-short">Mời nhập địa chỉ chi tiết khách hàng!</span>
+                                    </div>
+                                    <input type="hidden" name="status" value="1">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-outline-success" id="btnAddCustomerShort" disabled>Thêm</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <ul class="notifications-toast-custom"></ul>
+
+            <!-- phần hiện các mã giảm giá có thể sử dụng được  -->
+            <div th:replace="~{Bill/listVoucherIndex :: listVoucherBill}"></div>
+
+
+            <input type="hidden" id="toastMessage" th:value="${message}">
+            <input type="hidden" id="toastCheck" th:value="${check}">
+            <input type="hidden" id="idBill" th:value="${bill.id}">
+            <input type="hidden" id="idClient" th:value="${client}">
+
+            <input type="hidden" id="payMethod" th:value="${bill.paymentMethod}">
+            <input type="hidden" id="totalCash">
+
+            <!-- end -->
+        </article>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script th:src="@{/js/bill/validateAddCustomerShort.js}" type="text/javascript"></script>
+        <!--        <script src="/ajax/bill/ajaxBill.js"></script>-->
+        <!--        <script th:src="@{/js/bill/variableBill.js}" type="text/javascript"></script>-->
+        <!--        <script th:src="@{/js/bill/actionSelect2tag.js}" type="text/javascript"></script>-->
+        <!--        <script th:src="@{/js/bill/validateCash.js}" type="text/javascript"></script>-->
+        <!--        <script th:src="@{/js/bill/validateQuantityWrite.js}" type="text/javascript"></script>-->
+        <!--        <script th:src="@{/js/bill/rollBackIndex.js}" type="text/javascript"></script>-->
+        <!--        <script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.18.1/umd/index.js"></script>-->
+        <!--        <script src="/js/bill/setupQr.js"></script>-->
+        <!--        <script src="/js/bill/checkSwitch.js"></script>-->
+        <!--        <script src="/js/bill/setActive.js"></script>-->
+        <!--        <script src="/js/bill/previewImage.js"></script>-->
+
+
+
+        <script th:src="@{/js/bill/variableBill.js}" type="text/javascript"></script>
+
+        <!-- đây là scrip hien thi anh len  -->
+        <script src="/js/bill/previewImage.js"></script>
+        <!-- đây là scrip bắt sự kiện nút ấn giao hàng  -->
+        <script src="/js/bill/checkSwitch.js"></script>
+        <!--cai nay de set moi khi chon thi duoc active-->
+        <script src="/js/bill/setActive.js"></script>
+        <!--select 2 js-->
+        <script th:src="@{/js/bill/actionSelect2tag.js}" type="text/javascript"></script>
+        <script th:src="@{/js/select2/multiselect2.js}" type="text/javascript"></script>
+        <!--cai nay la ajax cua hien thi bill moi -->
+        <!--ngay 3  thang 9-->
+        <script src="/ajax/bill/ajaxBill.js"></script>
+        <!--        <script src="/ajax/Security/Register.js"></script>-->
+        <!--        <script th:src="@{/toast/action.js}" type="text/javascript"></script>-->
+        <!--select 2 js-->
+        <script th:src="@{/js/bill/actionSelect2tag.js}" type="text/javascript"></script>
+        <script th:src="@{/js/bill/validateCash.js}" type="text/javascript"></script>
+        <script th:src="@{/js/bill/validateQuantityWrite.js}" type="text/javascript"></script>
+        <script th:src="@{/pagination/actionPagination.js}" type="text/javascript"></script>
+
+        <script th:src="@{/js/bill/callAPIGHN.js}" type="text/javascript"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.18.1/umd/index.js"></script>
+        <script src="/js/bill/setupQr.js"></script>
+        <!--<script th:src="@{/ajax/bill/ajaxBillManage.js}" type="text/javascript"></script>-->
+        <!--<script th:src="@{/js/bill/rollBackIndex.js}" type="text/javascript"></script>-->
+
+        <!--        <script th:src="@{/js/onload.js}" type="text/javascript"></script>-->
+        <input type="hidden" id="checkFormBill">
+
+    </div>
+</main>
+</body>
+
+</html>
